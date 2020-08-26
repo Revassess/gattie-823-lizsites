@@ -26,7 +26,7 @@ public class ConnectionUtil {
 	// add your jdbc password
 	public static final String PASSWORD = "password";
 	// name of the created stored procedure in tier 3
-	public static final String TIER_3_PROCEDURE_NAME = "absolute";
+	public static final String TIER_3_PROCEDURE_NAME = "absolute(num)";
 	// name of the created sequence in tier 3
 	public static final String TIER_3_SEQUENCE_NAME = "incrementby3";
 
@@ -67,7 +67,7 @@ public class ConnectionUtil {
 			String sql2 = "SELECT * from absolutevalues where formervalue=? ";
 			PreparedStatement ps2 = conn.prepareStatement(sql2);
 			ps2.setLong(1, value);
-			ResultSet rs = ps.executeQuery();
+			ResultSet rs = ps2.executeQuery();
 			if (rs.next()) {
 				value = rs.getLong(2);
 				System.out.println("Absolute value: " + value);
