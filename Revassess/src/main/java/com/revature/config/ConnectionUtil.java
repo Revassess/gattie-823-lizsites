@@ -16,11 +16,11 @@ public class ConnectionUtil {
 	private static ConnectionUtil cu;
 	
 	// add your jdbc url
-	public static final String URL = "";
+	public static final String URL = "javafs200803.cg0rpxexvjxn.us-east-2.rds.amazonaws.com/tier3";
 	// add your jdbc username
-	public static final String USERNAME = "";
+	public static final String USERNAME = "postgres";
 	// add your jdbc password
-	public static final String PASSWORD = "";
+	public static final String PASSWORD = "password";
 	// name of the created stored procedure in tier 3
 	public static final String TIER_3_PROCEDURE_NAME = "";
 	// name of the created sequence in tier 3
