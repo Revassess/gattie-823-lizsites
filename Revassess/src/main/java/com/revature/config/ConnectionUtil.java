@@ -2,6 +2,8 @@ package com.revature.config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -24,7 +26,7 @@ public class ConnectionUtil {
 	// add your jdbc password
 	public static final String PASSWORD = "password";
 	// name of the created stored procedure in tier 3
-	public static final String TIER_3_PROCEDURE_NAME = "";
+	public static final String TIER_3_PROCEDURE_NAME = "absolute";
 	// name of the created sequence in tier 3
 	public static final String TIER_3_SEQUENCE_NAME = "incrementby3";
 
@@ -55,7 +57,19 @@ public class ConnectionUtil {
 
 
 	//implement this method with a callable statement that calls the absolute value sql function
-	public long callAbsoluteValueFunction(long value){
+	public static long callAbsoluteValueFunction(long value){
+		try (Connection conn = ConnectionUtil.connect()){
+			String sql = "select abs(?);";
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setLong(1, value);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				value = rs.getLong(1);
+				System.out.println("Absolute value: " + value);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return value;
 	}
 	
@@ -75,6 +89,8 @@ public class ConnectionUtil {
 	public static void main (String[] args) {
 		try {
 			ConnectionUtil.connect();
+			
+			callAbsoluteValueFunction(-30);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
