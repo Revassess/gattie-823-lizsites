@@ -1,5 +1,6 @@
 package com.revature.config;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -60,9 +61,9 @@ public class ConnectionUtil {
 	public static long callAbsoluteValueFunction(long value){
 		try (Connection conn = ConnectionUtil.connect()){
 			String sql = "call absolute(?);";
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setLong(1, value);
-			ps.execute();
+			CallableStatement cs = conn.prepareCall(sql);
+			cs.setLong(1, value);
+			cs.execute();
 			
 			String sql2 = "SELECT * from absolutevalues where formervalue=? ";
 			PreparedStatement ps2 = conn.prepareStatement(sql2);
