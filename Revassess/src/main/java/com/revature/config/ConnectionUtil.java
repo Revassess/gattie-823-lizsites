@@ -1,6 +1,8 @@
 package com.revature.config;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * 
@@ -14,9 +16,9 @@ import java.sql.Connection;
 public class ConnectionUtil {
 	//for singleton instance
 	private static ConnectionUtil cu;
-	
+	private static Connection conn;
 	// add your jdbc url
-	public static final String URL = "javafs200803.cg0rpxexvjxn.us-east-2.rds.amazonaws.com/tier3";
+	public static final String URL = "jdbc:postgresql://javafs200803.cg0rpxexvjxn.us-east-2.rds.amazonaws.com/tier3";
 	// add your jdbc username
 	public static final String USERNAME = "postgres";
 	// add your jdbc password
@@ -24,11 +26,31 @@ public class ConnectionUtil {
 	// name of the created stored procedure in tier 3
 	public static final String TIER_3_PROCEDURE_NAME = "";
 	// name of the created sequence in tier 3
-	public static final String TIER_3_SEQUENCE_NAME = "";
+	public static final String TIER_3_SEQUENCE_NAME = "incrementby3";
 
 	// implement this method to connect to the db and return the connection object
-	public Connection connect(){
-		return null;
+	public static Connection connect() throws SQLException {
+		if (conn == null) {
+			try {
+				Class.forName("org.postgresql.Driver");
+			} catch (ClassNotFoundException e) {
+				System.out.println("Could not register driver!");
+				e.printStackTrace();
+			} 
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		}
+		
+		//If connection was closed then retrieve a new connection
+		if (conn.isClosed()){
+			System.out.println("Opening new connection...");
+			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+		}
+		if (conn == null) {
+			  System.out.println("not connected");
+			} else {
+				System.out.println("connected");
+			}
+		return conn;
 	}
 
 
@@ -48,5 +70,13 @@ public class ConnectionUtil {
 			cu = new ConnectionUtil();
 		}
 		return cu;
+	}
+	
+	public static void main (String[] args) {
+		try {
+			ConnectionUtil.connect();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }
