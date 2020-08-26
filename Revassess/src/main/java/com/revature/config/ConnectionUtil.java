@@ -59,12 +59,17 @@ public class ConnectionUtil {
 	//implement this method with a callable statement that calls the absolute value sql function
 	public static long callAbsoluteValueFunction(long value){
 		try (Connection conn = ConnectionUtil.connect()){
-			String sql = "select abs(?);";
+			String sql = "call absolute(?);";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setLong(1, value);
+			ps.execute();
+			
+			String sql2 = "SELECT * from absolutevalues where formervalue=? ";
+			PreparedStatement ps2 = conn.prepareStatement(sql2);
+			ps2.setLong(1, value);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				value = rs.getLong(1);
+				value = rs.getLong(2);
 				System.out.println("Absolute value: " + value);
 			}
 		} catch (SQLException e) {
