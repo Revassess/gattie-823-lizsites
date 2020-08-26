@@ -1,0 +1,1 @@
+SELECT user_id, username, password, first_name, last_name, role_id, study_set.study_set_id, study_set.name from app_user, study_set where study_set.owner_id = (select app_user.user_id where app_user.user_id=5);

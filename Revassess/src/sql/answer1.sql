@@ -1,0 +1,1 @@
+SELECT * from app_user where user_id = 4;
